@@ -16,7 +16,6 @@ class App extends Component {
     this.renderChart();
   }
 
-  // helper: compute word frequencies
   getWordFrequency = (text) => {
     const stopWords = new Set([
       "the","and","a","an","in","on","at","for","with","about","as","by","to","of","from","that","which",
@@ -49,7 +48,6 @@ renderChart() {
     .attr("width", width)
     .attr("height", height);
 
-  // --- SCALES ---
   const fontSize = d3
     .scaleLinear()
     .domain([0, d3.max(data, (d) => d[1]) || 1])
@@ -63,19 +61,17 @@ renderChart() {
 
   const centerY = height / 2 + 20;
 
-  // --- DATA JOIN ---
-  const texts = svg.selectAll("text").data(data, (d) => d[0]); // key by word
+  const texts = svg.selectAll("text").data(data, (d) => d[0]); 
 
-  // --- ENTER SELECTION ---
   const enter = texts
     .enter()
     .append("text")
     .attr("text-anchor", "middle")
     .attr("fill", "black")
     .attr("opacity", 0)
-    .attr("x", (d) => xScale(d[0]) - 50) // start slightly left of target
+    .attr("x", (d) => xScale(d[0]) - 50) 
     .attr("y", centerY)
-    .attr("font-size", 5) // very small start
+    .attr("font-size", 5) 
     .text((d) => d[0]);
 
   enter
@@ -85,15 +81,13 @@ renderChart() {
     .attr("x", (d) => xScale(d[0]))
     .attr("font-size", (d) => fontSize(d[1]));
 
-  // --- UPDATE SELECTION ---
   texts
     .transition()
     .duration(1000)
-    .attr("x", (d) => xScale(d[0])) // slide horizontally if position changes
-    .attr("font-size", (d) => fontSize(d[1])) // grow/shrink smoothly
+    .attr("x", (d) => xScale(d[0])) 
+    .attr("font-size", (d) => fontSize(d[1])) 
     .attr("fill", "black");
 
-  // --- EXIT SELECTION ---
   texts
     .exit()
     .transition()
